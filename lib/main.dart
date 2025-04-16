@@ -7,7 +7,13 @@ class SignUpApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(routes: {'/': (context) => const SignUpScreen()});
+    return MaterialApp(
+      // 定義路由
+      routes: {
+        '/': (context) => const SignUpScreen(),
+        '/welcome': (context) => const WelcomeScreen(),
+      },
+    );
   }
 }
 
@@ -20,6 +26,23 @@ class SignUpScreen extends StatelessWidget {
       backgroundColor: Colors.grey[200],
       body: const Center(
         child: SizedBox(width: 400, child: Card(child: SignUpForm())),
+      ),
+    );
+  }
+}
+
+// 1. WelcomeScreen
+class WelcomeScreen extends StatelessWidget {
+  const WelcomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Text(
+          'Welcome!',
+          style: Theme.of(context).textTheme.displayMedium,
+        ),
       ),
     );
   }
@@ -39,6 +62,11 @@ class _SignUpFormState extends State<SignUpForm> {
 
   double _formProgress = 0;
 
+  void _showWelcomeScreen() {
+    // 呼叫Navigator 改變頁面
+    Navigator.of(context).pushNamed('/welcome');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -51,7 +79,11 @@ class _SignUpFormState extends State<SignUpForm> {
             padding: const EdgeInsets.all(8),
             child: TextFormField(
               controller: _firstNameTextController,
-              decoration: const InputDecoration(hintText: 'First name'),
+              decoration: const InputDecoration(
+                prefixIcon: Icon(Icons.account_box),
+                hintText: 'First name',
+                border: OutlineInputBorder(), // 輸入框樣式
+              ),
             ),
           ),
           Padding(
@@ -77,7 +109,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 return states.contains(WidgetState.disabled) ? null : Colors.blue;
               }),
             ),
-            onPressed: null,
+            onPressed: _showWelcomeScreen,
             child: const Text('Sign up'),
           ),
         ],
